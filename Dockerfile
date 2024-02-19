@@ -1,4 +1,4 @@
-FROM node:14.3 as base
+FROM node:20 as base
 
 ENV APP_DIR /opt/marotinus
 
@@ -12,13 +12,13 @@ RUN npm ci
 
 FROM base as estagio_de_dev
 
-ENTRYPOINT ["npx", "nodemon", "src/server.js"]
+ENTRYPOINT ["npm", "run", "dev"]
 
 
 
 
 FROM base as estagio_de_prd
 
-ENTRYPOINT ["node", "src/server.js"]
+ENTRYPOINT ["npm", "start"]
 
 COPY src $APP_DIR/src
