@@ -13,28 +13,28 @@ function install() {
     cd kube
 
     for ((i=1;i<=$total_number_services;i++)) do
-    if (($i == 1)); then
-        if [[ -z "${1}" ]]; then
-            helm -n istio-dev upgrade hello-istio${i} . -f values-dev.yaml --set nameOverride=hello-istio${i} --set fullnameOverride=hello-istio${i} --set enableCircuitBreaker=$circuitBreaker --install # --atomic --cleanup-on-fail #para CI/CD ideal é garantir atomicidade, como o apply fica mais lento estou evitando aqui
-        else
-            helm -n istio-dev template hello-istio${i} . -f values-dev.yaml --set nameOverride=hello-istio${i} --set fullnameOverride=hello-istio${i}  --set enableCircuitBreaker=$circuitBreaker >> ../helm-generated.yaml
-        fi
-    else
-        service_number=$((${i}-1))
-        if (($i == $total_number_services)); then
+        if (($i == 1)); then
             if [[ -z "${1}" ]]; then
-                helm -n istio-dev upgrade hello-istio${i} . -f values-dev.yaml --set nextService=hello-istio${service_number} --set nameOverride=hello-istio${i} --set fullnameOverride=hello-istio${i} --set enableGateway=true --set enableCircuitBreaker=$circuitBreaker  --install # --atomic --cleanup-on-fail
+                helm -n istio-dev upgrade hello-istio${i} . -f values-dev.yaml --set nameOverride=hello-istio${i} --set fullnameOverride=hello-istio${i} --set enableCircuitBreaker=$circuitBreaker --install # --atomic --cleanup-on-fail #para CI/CD ideal é garantir atomicidade, como o apply fica mais lento estou evitando aqui
             else
-                helm -n istio-dev template hello-istio${i} . -f values-dev.yaml --set nextService=hello-istio${service_number} --set nameOverride=hello-istio${i} --set fullnameOverride=hello-istio${i} --set enableGateway=true  --set enableCircuitBreaker=$circuitBreaker >> ../helm-generated.yaml
+                helm -n istio-dev template hello-istio${i} . -f values-dev.yaml --set nameOverride=hello-istio${i} --set fullnameOverride=hello-istio${i}  --set enableCircuitBreaker=$circuitBreaker >> ../helm-generated.yaml
             fi
         else
-            if [[ -z "${1}" ]]; then
-                helm -n istio-dev upgrade hello-istio${i} . -f values-dev.yaml --set nextService=hello-istio${service_number} --set nameOverride=hello-istio${i} --set fullnameOverride=hello-istio${i} --set enableCircuitBreaker=$circuitBreaker --install # --atomic --cleanup-on-fail
+            service_number=$((${i}-1))
+            if (($i == $total_number_services)); then
+                if [[ -z "${1}" ]]; then
+                    helm -n istio-dev upgrade hello-istio${i} . -f values-dev.yaml --set nextService=hello-istio${service_number} --set nameOverride=hello-istio${i} --set fullnameOverride=hello-istio${i} --set enableGateway=true --set enableCircuitBreaker=$circuitBreaker  --install # --atomic --cleanup-on-fail
+                else
+                    helm -n istio-dev template hello-istio${i} . -f values-dev.yaml --set nextService=hello-istio${service_number} --set nameOverride=hello-istio${i} --set fullnameOverride=hello-istio${i} --set enableGateway=true  --set enableCircuitBreaker=$circuitBreaker >> ../helm-generated.yaml
+                fi
             else
-                helm -n istio-dev template hello-istio${i} . -f values-dev.yaml --set nextService=hello-istio${service_number} --set nameOverride=hello-istio${i} --set fullnameOverride=hello-istio${i} --set enableCircuitBreaker=$circuitBreaker >> ../helm-generated.yaml
+                if [[ -z "${1}" ]]; then
+                    helm -n istio-dev upgrade hello-istio${i} . -f values-dev.yaml --set nextService=hello-istio${service_number} --set nameOverride=hello-istio${i} --set fullnameOverride=hello-istio${i} --set enableCircuitBreaker=$circuitBreaker --install # --atomic --cleanup-on-fail
+                else
+                    helm -n istio-dev template hello-istio${i} . -f values-dev.yaml --set nextService=hello-istio${service_number} --set nameOverride=hello-istio${i} --set fullnameOverride=hello-istio${i} --set enableCircuitBreaker=$circuitBreaker >> ../helm-generated.yaml
+                fi
             fi
         fi
-    fi
     done
 }
 
@@ -108,46 +108,46 @@ function openKiali() {
 
 case "$1" in
     "install")
-		install $2
-		;;
-	"clean")
-		deleteResources
-		;;
+        install $2
+        ;;
+    "clean")
+        deleteResources
+        ;;
     "pf")
-		portForwardSVC $2
-		;;
+        portForwardSVC $2
+        ;;
     "enableGreen")
         enableGreen $2 $3 $4 $5
         ;;
     "pfIngress")
-		portForwardIngress
-		;;
+        portForwardIngress
+        ;;
     "enableCB")
-		turnOnCircuitBreaker
-		;;
-	"kiali")
-		openKiali
-		;;
+        turnOnCircuitBreaker
+        ;;
+    "kiali")
+        openKiali
+        ;;
     "jaeger")
-		openJaeger
-		;;
-	"call")
-		callIngress
-		;;
+        openJaeger
+        ;;
+    "call")
+        callIngress
+        ;;
     "callDelay")
-		callDelay
-		;;
+        callDelay
+        ;;
     "callCaos")
-		callCaos
-		;;
-	"callChain")
-		callIngressChain $2
-		;;
+        callCaos
+        ;;
+    "callChain")
+        callIngressChain $2
+        ;;
     "callChainBulk")
-		callIngressChainBulk
-		;;
-	*)
-		error "Usage: $0 clean|install|pf|pfIngress|call|callDelay|callChain|callChainBulk|enableGreen|kiali|jaeger"
-		exit 1
-		;;
+        callIngressChainBulk
+        ;;
+    *)
+        error "Usage: $0 clean|install|pf|pfIngress|call|callDelay|callChain|callChainBulk|enableGreen|kiali|jaeger"
+        exit 1
+        ;;
 esac

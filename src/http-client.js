@@ -17,12 +17,12 @@ const filterTracingHeaders = headers => Object.assign(...Object.entries(headers)
 }));
 
 const makeRequest = async (url, options) => {
-    const newOptions = { headers: {} }
-    Object.assign(newOptions.headers, filterTracingHeaders(options.headers));
-    const res = await fetch(url, newOptions);
+	const newOptions = { headers: {} }
+	Object.assign(newOptions.headers, filterTracingHeaders(options.headers));
+	const res = await fetch(url, newOptions);
 	if (!res.ok) {
 		throw new Error(res.status);
-    }
+	}
 	return res.json();
 };
 
