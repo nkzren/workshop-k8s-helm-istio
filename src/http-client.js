@@ -1,5 +1,3 @@
-const fetch = require('node-fetch');
-
 const TRACE_HEADERS = {
 	'b3': true,
 	'x-b3-flags': true,
