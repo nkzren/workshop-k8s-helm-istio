@@ -60,3 +60,16 @@ Uma vez que temos um sistema que nos permite mover workloads entre nodes de
 forma transparente, o cluster se torna mais resiliente. O Kubernetes monitora as
 aplicações e o hardware em que elas rodam, e tem a capacidade de realocar os
 sistemas num evento de falha ou manutenção de alguma máquina
+
+## Desvantagens
+
+### Complexidade
+
+O k8s é uma ferramenta complexa. Essa complexidade pode impactar negativamente a
+produtividade em determinadas situações e pode tornar o gerenciamento e
+utilização da plataforma confusa no início.
+
+### Curva de aprendizado íngreme
+
+Isso torna sua transição relativamente custosa, sendo necessário mudanças em
+determinados processos
