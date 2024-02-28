@@ -1,4 +1,4 @@
-tag := marotinus
+tag := registry.docker.elo7aws.com.br/marotinus
 
 .PHONY: build-prod
 build-prod:
