@@ -1,10 +1,68 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: nginx
+  name: marotinus
+  labels:
+    environment: production
+    app: meu-marotinus
 spec:
   containers:
-  - name: nginx
-    image: nginx:1.14.2
+  - name: marotinus
+    image: erichegt/hello-istio:0.1
     ports:
-    - containerPort: 80
+    - containerPort: 3000
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 3000
+      initialDelaySeconds: 5
+      periodSeconds: 5
+    env:
+      - name: DELAY_VALUE
+        value: "1000"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: marotinus-2
+  labels:
+    environment: production
+    app: meu-marotinus
+spec:
+  containers:
+  - name: marotinus
+    image: erichegt/hello-istio:0.1
+    ports:
+    - containerPort: 3000
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 3000
+      initialDelaySeconds: 5
+      periodSeconds: 5
+    env:
+      - name: DELAY_VALUE
+        value: "1000"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: marotinus-3
+  labels:
+    environment: production
+    app: meu-marotinus
+spec:
+  containers:
+  - name: marotinus
+    image: erichegt/hello-istio:0.1
+    ports:
+    - containerPort: 3000
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 3000
+      initialDelaySeconds: 5
+      periodSeconds: 5
+    env:
+      - name: DELAY_VALUE
+        value: "1000"
