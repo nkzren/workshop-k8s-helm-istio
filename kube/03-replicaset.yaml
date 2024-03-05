@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: marotinus
+  labels:
+    app: meu-marotinus
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      rs: marotinus
+      app: meu-marotinus
+  template:
+    metadata:
+      labels:
+        rs: marotinus
+        app: meu-marotinus
+        service: marotinus
+    spec:
+      containers:
+      - name: marotinus
+        image: erichegt/hello-istio:0.1
+        ports:
+        - containerPort: 3000
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        env:
+          - name: DELAY_VALUE
+            value: "1000"
