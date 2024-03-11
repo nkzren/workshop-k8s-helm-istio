@@ -48,6 +48,7 @@ Selector labels
 {{- define "marotinus.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "marotinus.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+app: {{ .Release.Name }}
 {{- end }}
 
 {{/*

@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: {{ include "marotinus.fullname" . }}
   labels:
+    service: "test"
     {{- include "marotinus.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
